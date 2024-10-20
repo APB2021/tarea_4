@@ -1,10 +1,13 @@
 package tarea_4;
 
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -13,6 +16,10 @@ import java.util.Scanner;
 public class Alumno implements Serializable {
 
 	private static final long serialVersionUID = 5101083615448063518L;
+
+	/**
+	 * @author Alberto Polo
+	 */
 
 	// Constante para indicar el número de alumnos
 	private static final int NUMERO_DE_ALUMNOS = 5;
@@ -119,63 +126,12 @@ public class Alumno implements Serializable {
 				+ fechaNacimiento + " - Ciclo: " + ciclo + " - Curso: " + curso + " Grupo: " + grupo;
 	}
 
-	// Método para leer NUMERO_DE_ALUMNOS:
-
-	public void leerAlumnos() {
-
-		// Limpiar el buffer:
-		// sc.nextLine();
-
-		for (int i = 0; i < NUMERO_DE_ALUMNOS; i++) {
-			System.out.print("Introduzca el NOMBRE del alumno " + (i + 1) + ": ");
-			nombre = sc.nextLine().toUpperCase();
-			System.out.print("Introduzca los APELLIDOS del alumno: ");
-			apellidos = sc.nextLine().toUpperCase();
-
-			// Convertimos el char en String para poder manejarlo:
-			String generoString = Character.toString(genero);
-
-			while (!generoString.equalsIgnoreCase("H") && !generoString.equalsIgnoreCase("M")) {
-				System.out.print("Introduzca el GÉNERO del alumno(H/M): ");
-				genero = sc.nextLine().toUpperCase().charAt(0);
-				generoString = Character.toString(genero);
-			}
-
-			/////////////// FECHA DE NACIMIENTO//////////////////////////////
-			System.out.print("Introduzca la FECHA DE NACIMIENTO del alumno en formato (dd/MM/yyyy): ");
-			String fechaNacimientoString = sc.nextLine();
-
-			// Definir formato de fecha según el String:
-			SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
-
-			try {
-				// Convertir el String en Date
-				fechaNacimiento = formato.parse(fechaNacimientoString);
-				// System.out.println("Fecha convertida: " + fecha);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			/////////////// FIN FECHA DE NACIMIENTO//////////////////////////////
-			System.out.print("Introduzca el CICLO del alumno: ");
-			ciclo = sc.nextLine().toUpperCase();
-			System.out.print("Introduzca el CURSO del alumno: ");
-			curso = sc.nextLine();
-			System.out.print("Introduzca el GRUPO del alumno: ");
-			grupo = sc.nextLine().toUpperCase();
-
-			// Vamos añadiendo el nia secuencialmente incrementándolo en 1 unidad:
-			nia = nia + 1;
-
-			// Añadimos el alumno al ArrayList de alumnos:
-			// alumnos.add(new Alumno(nia, nombre, apellidos, genero, fechaNacimiento,
-			// ciclo, curso, grupo));
-		}
-		System.out.println("------------------------------------------------------------");
-		System.out.println("Se han leído los datos de " + NUMERO_DE_ALUMNOS + " alumnos.");
-	}
-
-	// MÉTODO para crear un fichero BINARIO solicitado por teclado
-
+	/**
+	 * MÉTODO para crear un fichero BINARIO solicitado por teclado
+	 * 
+	 * @author Alberto Polo
+	 * @return - Devuelve un fichero binario
+	 */
 	public File creaFicheroBinario() {
 
 		String nombreFicheroBinario, ruta = "";
@@ -218,9 +174,14 @@ public class Alumno implements Serializable {
 		return ficheroBinario;
 	}
 
-	// MÉTODO para leer 1 alumno y guardarlo CAMPO a CAMPO en un fichero BINARIO
-	// solicitado por teclado
-
+	/**
+	 * MÉTODO para leer 1 alumno y guardarlo CAMPO a CAMPO en un fichero BINARIO
+	 * solicitado por teclado
+	 * 
+	 * @author Alberto Polo
+	 * @param ficheroBinario - El método recibe un fichero binario en el que
+	 *                       guardará los alumnos
+	 */
 	public void guarda_Alumno_Campo_a_Campo_en_Fichero_Binario(File ficheroBinario) {
 
 		DataOutputStream dos = null;
@@ -237,12 +198,12 @@ public class Alumno implements Serializable {
 
 				// NOMBRE - String
 				System.out.print("Introduzca el NOMBRE del alumno " + (i + 1) + ": ");
-				nombre = sc.nextLine();
+				nombre = sc.nextLine().toUpperCase();
 				dos.writeUTF(nombre);
 
 				// APELLIDOS - String
 				System.out.print("Introduzca los APELLIDOS del alumno " + (i + 1) + ": ");
-				apellidos = sc.nextLine();
+				apellidos = sc.nextLine().toUpperCase();
 				dos.writeUTF(apellidos);
 
 				// GÉNERO - char

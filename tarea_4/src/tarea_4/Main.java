@@ -2,6 +2,10 @@ package tarea_4;
 
 import java.io.File;
 
+/**
+ * @author Alberto Polo
+ */
+
 public class Main {
 
 	/*
